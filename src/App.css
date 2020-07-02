@@ -1,0 +1,65 @@
+body {
+  padding: 30px;
+}
+
+.list-movie {
+  width: 80%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  gap: 50px;
+}
+
+h1.not-found {
+  text-align: center;
+}
+
+.movie {
+  width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-family: monospace;
+  border: 1px solid rgb(214, 210, 210);
+}
+
+.movie h2 {
+  margin-bottom: 11px;
+}
+
+.movie p {
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.form {
+  margin-top: 50px;
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.form input {
+  width: 400px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+.form input::placeholder {
+  padding: 5px;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+.form button {
+  width: 100px;
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 10px;
+  font-family: monospace;
+}
+
+.form button:hover {
+  cursor: pointer;
+}
