@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const MovieNotFound = () => {
-  return (
-    <div className="not-found">
-      <h1>Movie Not Found</h1>
-    </div>
-  );
-}
+const MovieNotFound = () => (
+  <div className="not-found">
+    <h1>Movie Not Found</h1>
+  </div>
+);
 
 const Movies = ({ data }) => {
   return (
@@ -70,19 +68,16 @@ const App = () => {
 
   return (
     <div>
-      <div>
-        <form onSubmit={handleSearch}>
-          <div class="input-form">
-            <input type="text" placeholder="search movie..." onChange={handleInput} />
-            <button>Search</button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={handleSearch}>
+        <div class="input-form">
+          <input type="text" placeholder="search movie..." onChange={handleInput} />
+          <button>Search</button>
+        </div>
+      </form>
 
       {status && data.length === 0 ? <div className="spinner-2"></div> : movies}
     </div>
   );
 }
-
 
 export default App;
