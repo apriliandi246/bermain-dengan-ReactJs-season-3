@@ -44,7 +44,7 @@ const App = () => {
    const handleSearch = (event) => {
       event.preventDefault();
 
-      if (!keywords) {
+      if (!keywords.trimStart().trimEnd()) {
          alert('type something...');
          return;
       }
