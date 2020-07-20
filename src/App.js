@@ -1,58 +1,8 @@
 import React from 'react';
+import Form from './components/Form';
+import Movies from './components/Movies';
+import MovieNotFound from './components/MovieNotFound';
 import './css/App.css';
-
-
-class Movies extends React.Component {
-   render() {
-      const data = this.props.data;
-
-      return (
-         <React.Fragment>
-            <div className="list-movie">
-               {
-                  data.Search.map((movie) => {
-                     return (
-                        <div className="movie" key={movie.imdbID}>
-                           <h2>{movie.Title}</h2>
-                           <img src={movie.Poster} alt={movie.imdbID} />
-                           <p>{movie.Year}</p>
-                           <p>{movie.Type}</p>
-                        </div>
-                     );
-                  })
-               }
-            </div>
-         </React.Fragment>
-      );
-   }
-}
-
-
-class MovieNotFound extends React.Component {
-   render() {
-      return (
-         <div className="not-found">
-            <h1>Movie Not Found</h1>
-         </div>
-      );
-   }
-}
-
-
-class Form extends React.Component {
-   render() {
-      const { handleSubmit, handleKeywords } = this.props;
-
-      return (
-         <form spellCheck="false" onSubmit={handleSubmit}>
-            <div className="input-form">
-               <input type="text" placeholder="search movie..." autoFocus onChange={handleKeywords} />
-               <button>Search</button>
-            </div>
-         </form>
-      );
-   }
-}
 
 
 const showMovies = ((AllMovies, MovieNotFound) => {
