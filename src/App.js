@@ -1,34 +1,11 @@
 import React, { useState } from 'react';
-import './App.css';
+import Form from './components/Form';
+import Movies from './components/Movies';
+import MovieNotFound from './components/MovieNotFound';
+import './css/App.css';
 
-const MovieNotFound = () => (
-   <div className="not-found">
-      <h1>Movie Not Found</h1>
-   </div>
-);
 
-const Movies = ({ data }) => {
-   return (
-      <React.Fragment>
-         <div className="list-movie">
-            {
-               data.Search.map((movie) => {
-                  return (
-                     <div className="movie" key={movie.imdbID}>
-                        <h2>{movie.Title}</h2>
-                        <img src={movie.Poster} alt={movie.imdbID} />
-                        <p>{movie.Year}</p>
-                        <p>{movie.Type}</p>
-                     </div>
-                  );
-               })
-            }
-         </div>
-      </React.Fragment>
-   );
-}
-
-const showMovies = ((Component1, Component2) => {
+const showMovies = ((AllMovies, MovieNotFound) => {
    return class extends React.Component {
       render() {
          const { movies, statusLoading } = this.props;
@@ -37,12 +14,12 @@ const showMovies = ((Component1, Component2) => {
             return <div className="spinner-2"></div>;
          }
 
-         if (movies.Response === 'False') {
-            return <Component2 />
+         if (movies.Search) {
+            return <AllMovies data={movies} />
          }
 
-         if (movies.Search) {
-            return <Component1 data={movies} />
+         if (movies.Response === 'False') {
+            return <MovieNotFound />
          }
 
          return null;
@@ -50,21 +27,24 @@ const showMovies = ((Component1, Component2) => {
    }
 });
 
+
 const ListMovie = showMovies(Movies, MovieNotFound);
 
+
 const App = () => {
-   const [text, setText] = useState('');
+   const [keywords, setKeywords] = useState('');
    const [data, setData] = useState([]);
    const [isLoading, setLoading] = useState(false);
 
+
    const handleInput = (event) => {
-      setText(event.target.value);
+      setKeywords(event.target.value);
    }
 
    const handleSearch = (event) => {
       event.preventDefault();
 
-      if (!text) {
+      if (!keywords) {
          alert('type something...');
          return;
       }
@@ -72,7 +52,7 @@ const App = () => {
       setData([]);
       setLoading(true);
 
-      fetch(`http://www.omdbapi.com/?apikey=80dfc363&s=${text}`)
+      fetch(`http://www.omdbapi.com/?apikey=80dfc363&s=${keywords}`)
          .then((res) => res.json())
          .then((data) => setData(data))
          .catch((err) => {
@@ -82,12 +62,10 @@ const App = () => {
 
    return (
       <div>
-         <form onSubmit={handleSearch}>
-            <div className="input-form">
-               <input type="text" placeholder="search movie..." onChange={handleInput} />
-               <button>Search</button>
-            </div>
-         </form>
+         <Form
+            handleKeywords={handleInput}
+            handleSearch={handleSearch}
+         />
 
          <ListMovie
             movies={data}
@@ -96,5 +74,6 @@ const App = () => {
       </div>
    );
 }
+
 
 export default App;
