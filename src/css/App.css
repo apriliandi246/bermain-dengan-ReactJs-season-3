@@ -67,17 +67,17 @@ form input::placeholder {
 }
 
 form button {
-  width: 100px;
-  padding: 14px;
   border: none;
+  width: 100px;
   outline: none;
+  padding: 14px;
   cursor: pointer;
   font-size: 16px;
+  transition: 0.2s;
   margin-left: 15px;
   color: whitesmoke;
   font-family: monospace;
   background-color: rgb(37, 51, 65);
-  transition: 0.2s;
 }
 
 form button:hover {
@@ -94,16 +94,16 @@ form button:hover {
 
 
 .spinner-2::before {
-  content: "";
-  position: absolute;
-  box-sizing: border-box;
   top: 23%;
   left: 50%;
   width: 60px;
+  content: "";
   height: 60px;
   margin-top: -30px;
   margin-left: -30px;
   border-radius: 50%;
+  position: absolute;
+  box-sizing: border-box;
   border: 4px solid transparent;
   border-top-color: blueviolet;
   border-bottom-color: blueviolet;

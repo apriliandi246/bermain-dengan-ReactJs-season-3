@@ -1,48 +1,75 @@
-import React, { useState } from 'react';
-import './App.css';
+import React from 'react';
+import './css/App.css';
 
-const MovieNotFound = () => (
-   <div className="not-found">
-      <h1>Movie Not Found</h1>
-   </div>
-);
 
-const Movies = ({ data }) => {
-   return (
-      <React.Fragment>
-         <div className="list-movie">
-            {
-               data.Search.map((movie) => {
-                  return (
-                     <div className="movie" key={movie.imdbID}>
-                        <h2>{movie.Title}</h2>
-                        <img src={movie.Poster} alt={movie.imdbID} />
-                        <p>{movie.Year}</p>
-                        <p>{movie.Type}</p>
-                     </div>
-                  );
-               })
-            }
-         </div>
-      </React.Fragment>
-   );
+class Movies extends React.Component {
+   render() {
+      const data = this.props.data;
+
+      return (
+         <React.Fragment>
+            <div className="list-movie">
+               {
+                  data.Search.map((movie) => {
+                     return (
+                        <div className="movie" key={movie.imdbID}>
+                           <h2>{movie.Title}</h2>
+                           <img src={movie.Poster} alt={movie.imdbID} />
+                           <p>{movie.Year}</p>
+                           <p>{movie.Type}</p>
+                        </div>
+                     );
+                  })
+               }
+            </div>
+         </React.Fragment>
+      );
+   }
 }
 
-const showMovies = ((Component1, Component2) => {
+
+class MovieNotFound extends React.Component {
+   render() {
+      return (
+         <div className="not-found">
+            <h1>Movie Not Found</h1>
+         </div>
+      );
+   }
+}
+
+
+class Form extends React.Component {
+   render() {
+      const { handleSubmit, handleKeywords } = this.props;
+
+      return (
+         <form spellCheck="false" onSubmit={handleSubmit}>
+            <div className="input-form">
+               <input type="text" placeholder="search movie..." autoFocus onChange={handleKeywords} />
+               <button>Search</button>
+            </div>
+         </form>
+      );
+   }
+}
+
+
+const showMovies = ((AllMovies, MovieNotFound) => {
    return class extends React.Component {
       render() {
          const { movies, statusLoading } = this.props;
 
          if (statusLoading === true && movies.length === 0) {
-            return <div className="spinner-2"></div>;
-         }
-
-         if (movies.Response === 'False') {
-            return <Component2 />
+            return <div className="spinner-2"></div>
          }
 
          if (movies.Search) {
-            return <Component1 data={movies} />
+            return <AllMovies data={movies} />
+         }
+
+         if (movies.Response === 'False') {
+            return <MovieNotFound />
          }
 
          return null;
@@ -50,51 +77,69 @@ const showMovies = ((Component1, Component2) => {
    }
 });
 
+
 const ListMovie = showMovies(Movies, MovieNotFound);
 
-const App = () => {
-   const [text, setText] = useState('');
-   const [data, setData] = useState([]);
-   const [isLoading, setLoading] = useState(false);
 
-   const handleInput = (event) => {
-      setText(event.target.value);
+class App extends React.Component {
+   constructor() {
+      super();
+
+      this.state = {
+         data: [],
+         keywords: '',
+         isLoading: false
+      }
+
+      this.handleInput = this.handleInput.bind(this);
+      this.handleSearch = this.handleSearch.bind(this);
    }
 
-   const handleSearch = (event) => {
+   handleInput(event) {
+      this.setState({ keywords: event.target.value });
+   }
+
+   handleSearch(event) {
       event.preventDefault();
 
-      if (!text) {
-         alert('type something...');
+      const keywords = this.state.keywords.trimStart().trimEnd();
+
+      if (!keywords) {
+         alert("type something...");
          return;
       }
 
-      setData([]);
-      setLoading(true);
+      this.setState({
+         data: [],
+         isLoading: true
+      });
 
-      fetch(`http://www.omdbapi.com/?apikey=80dfc363&s=${text}`)
+      fetch(`http://www.omdbapi.com/?apikey=80dfc363&s=${keywords}`)
          .then((res) => res.json())
-         .then((data) => setData(data))
+         .then((data) => this.setState({ data }))
          .catch((err) => {
             console.log(err.message);
          });
    }
 
-   return (
-      <div>
-         <form onSubmit={handleSearch}>
-            <div className="input-form">
-               <input type="text" placeholder="search movie..." onChange={handleInput} />
-               <button>Search</button>
-            </div>
-         </form>
+   render() {
+      const { data, isLoading } = this.state;
 
-         <ListMovie
-            movies={data}
-            statusLoading={isLoading}
-         />
-      </div>
-   );
+      return (
+         <div>
+            <Form
+               handleSubmit={this.handleSearch}
+               handleKeywords={this.handleInput}
+            />
+
+            <ListMovie
+               movies={data}
+               statusLoading={isLoading}
+            />
+         </div>
+      );
+   }
 }
+
 
 export default App;
