@@ -48,7 +48,7 @@ const App = () => {
       setData([]);
       setLoading(true);
 
-      fetch(`http://www.omdbapi.com/?apikey=80dfc363&s=${keywords}`)
+      fetch(`https://www.omdbapi.com/?apikey=80dfc363&s=${keywords}`)
          .then((res) => res.json())
          .then((data) => setData(data))
          .catch((err) => {
