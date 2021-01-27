@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import Form from './components/Form';
-import Movies from './components/Movies';
-import MovieNotFound from './components/MovieNotFound';
-import './css/App.css';
+import React, { useState } from "react";
+import Form from "./components/Form";
+import Movies from "./components/Movies";
+import MovieNotFound from "./components/MovieNotFound";
+import "./css/App.css";
 
-
-const showMovies = ((AllMovies, MovieNotFound) => {
+const showMovies = (AllMovies, MovieNotFound) => {
    return class extends React.Component {
       render() {
          const { movies, statusLoading } = this.props;
@@ -15,37 +14,34 @@ const showMovies = ((AllMovies, MovieNotFound) => {
          }
 
          if (movies.Search) {
-            return <AllMovies data={movies} />
+            return <AllMovies data={movies} />;
          }
 
-         if (movies.Response === 'False') {
-            return <MovieNotFound />
+         if (movies.Response === "False") {
+            return <MovieNotFound />;
          }
 
          return null;
       }
-   }
-});
-
+   };
+};
 
 const ListMovie = showMovies(Movies, MovieNotFound);
 
-
 const App = () => {
-   const [keywords, setKeywords] = useState('');
+   const [keywords, setKeywords] = useState("");
    const [data, setData] = useState([]);
    const [isLoading, setLoading] = useState(false);
 
-
    const handleInput = (event) => {
       setKeywords(event.target.value);
-   }
+   };
 
    const handleSearch = (event) => {
       event.preventDefault();
 
       if (!keywords.trimStart().trimEnd()) {
-         alert('type something...');
+         alert("type something...");
          return;
       }
 
@@ -58,22 +54,15 @@ const App = () => {
          .catch((err) => {
             console.log(err.message);
          });
-   }
+   };
 
    return (
       <div>
-         <Form
-            handleKeywords={handleInput}
-            handleSearch={handleSearch}
-         />
+         <Form handleKeywords={handleInput} handleSearch={handleSearch} />
 
-         <ListMovie
-            movies={data}
-            statusLoading={isLoading}
-         />
+         <ListMovie movies={data} statusLoading={isLoading} />
       </div>
    );
-}
-
+};
 
 export default App;

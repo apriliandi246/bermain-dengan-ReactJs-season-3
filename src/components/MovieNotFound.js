@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 
 const MovieNotFound = () => {
    return (
@@ -9,7 +8,4 @@ const MovieNotFound = () => {
    );
 };
 
-
 export default MovieNotFound;
-
-
